@@ -6,6 +6,27 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
 
+# Descargar recursos necesarios si no existen
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords')
+
+# **********************
+import os
+import sys
+
+# Obtener el path absoluto del script actual
+try:
+    ruta_script = os.path.abspath(__file__)
+except NameError:
+    # __file__ puede no estar definido en ejecución interactiva (ej: Streamlit Cloud)
+    ruta_script = os.path.abspath(sys.argv[0])
+
+st.subheader("📍 Ruta del script ejecutado:")
+st.code(ruta_script)
+# **********************
+
 # Function for text preprocessing
 def preprocess_text(text):
     text = re.sub(r'http\S+', '', text)  # Remove URLs
@@ -28,10 +49,11 @@ st.write("Version: 1.0")
 # test use ./model/.....
 # production use streamlit_sentiment/model/....
 
-vectorizer = joblib.load('streamlit_sentiment/model/tfidf_vectorizer.pkl')
-svm_model = joblib.load('streamlit_sentiment/model/svm_model.pkl')
-nb_model = joblib.load('streamlit_sentiment/model/naive_bayes_model.pkl')
-lr_model = joblib.load('streamlit_sentiment/model/logistic_regression_model.pkl')
+
+vectorizer = joblib.load('./streamlit_sentiment/model/tfidf_vectorizer.pkl')
+svm_model = joblib.load('./streamlit_sentiment/model/svm_model.pkl')
+nb_model = joblib.load('./streamlit_sentiment/model/naive_bayes_model.pkl')
+lr_model = joblib.load('./streamlit_sentiment/model/logistic_regression_model.pkl')
 
 # App title
 st.title("Tweet Sentiment Analysis App")
